@@ -26,4 +26,8 @@ public class UserController {
 
         throw new Exception("User not found");
     }
+
+    public List<User> readAllUsers(){ // создали метод получения всех контактов
+        return repository.getAllUsers();
+    }
 }
