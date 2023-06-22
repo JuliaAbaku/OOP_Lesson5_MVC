@@ -22,7 +22,7 @@ public class RepositoryFile implements Repository {
     }
 
     @Override
-    public String CreateUser(User user) {
+    public String createUser(User user) {
 
         List<User> users = getAllUsers();
         int max = 0;
@@ -36,11 +36,43 @@ public class RepositoryFile implements Repository {
         String id = String.format("%d", newId);
         user.setId(id);
         users.add(user);
+        List<String> lines = mapToString(users); // выделили метод mapToString
+        fileOperation.saveAllLines(lines);
+        return id;
+    }
+
+    private List<String> mapToString(List<User> users) {
         List<String> lines = new ArrayList<>();
         for (User item: users) {
             lines.add(mapper.map(item));
         }
-        fileOperation.saveAllLines(lines);
-        return id;
+        return lines;
+    }
+
+    @Override
+    public User updateUser(User user) { // переопределили новый метод из Repository
+        List<User> users = getAllUsers();
+        for (User currentUser:users) {
+            if(currentUser.getId().equals(user.getId())){
+                currentUser.setFirstName(user.getFirstName());
+                currentUser.setLastName(user.getLastName());
+                currentUser.setPhone(user.getPhone());
+            }
+
+        }
+        fileOperation.saveAllLines(mapToString(users));
+        return user;
+    }
+
+    @Override
+    public User deleteUser(User user) {
+        List<User> users = getAllUsers();
+        for (User currentUser:users) {
+            if (currentUser.getId().equals(user.getId())) {
+                users.remove(currentUser);
+            }
+        }
+        fileOperation.saveAllLines(mapToString(users));
+        return user;
     }
 }

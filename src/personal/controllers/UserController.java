@@ -13,7 +13,7 @@ public class UserController {
     }
 
     public void saveUser(User user) {
-        repository.CreateUser(user);
+        repository.createUser(user);
     }
 
     public User readUser(String userId) throws Exception {
@@ -29,5 +29,13 @@ public class UserController {
 
     public List<User> readAllUsers(){ // создали метод получения всех контактов
         return repository.getAllUsers();
+    }
+
+    public User updateUser(User user){
+        return repository.updateUser(user);
+    }
+
+    public User deleteUser(User user){
+        return repository.deleteUser(user);
     }
 }
